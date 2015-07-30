@@ -1,0 +1,42 @@
+﻿<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-toast/paper-toast.html">
+
+<polymer-element name="core-appcache">
+  <template>
+    <paper-toast id="paperToast"></paper-toast>
+    <content></content>
+  </template>
+  <script>
+    Polymer('core-appcache', {
+      ready: function () {
+        var self = this;
+        var appCache = window.applicationCache;
+
+        appCache.addEventListener('downloading', handleDownloadingEvent, false);
+        appCache.addEventListener('cached', handleCachedEvent, false);
+        appCache.addEventListener('updateready', handleUpdateReadyEvent, false);
+        appCache.addEventListener('error', handleErrorEvent, false);
+
+        function handleDownloadingEvent() {
+          self.$.paperToast.text = "App is installing ...";
+          self.$.paperToast.show();
+        };
+
+        function handleCachedEvent() {
+          self.$.paperToast.text = "App is ready for offline use.";
+          self.$.paperToast.show();
+        };
+
+        function handleUpdateReadyEvent() {
+          self.$.paperToast.text = "A new version of App is available.";
+          self.$.paperToast.show();
+        };
+
+        function handleErrorEvent() {
+          self.$.paperToast.text = "An error occured while downloading the App.";
+          self.$.paperToast.show();
+        };
+      }
+    });
+  </script>
+</polymer-element>
